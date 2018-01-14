@@ -1,0 +1,29 @@
+version: '2'
+services:
+    web:
+       image: nginx:latest
+       ports:
+        - "80:80"
+       volumes:
+        - ./code:/code
+        - ./site.conf:/etc/nginx/conf.d/site.conf
+       links:
+        - php
+
+    php:
+      build:
+        context: ./php
+        dockerfile: Dockerfile
+      volumes:
+        - ./code:/code
+        
+    db:
+        image: mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+
+
+    phpmyadmin:
+          image: phpmyadmin/phpmyadmin
+          ports:
+            - "8080:80"
